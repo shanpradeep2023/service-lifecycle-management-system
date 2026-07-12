@@ -9,7 +9,7 @@ import jakarta.validation.constraints.NotBlank;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class RoleUpdateRequestDTO {
+public class UserRoleUpdateRequestDTO {
 
     @NotBlank
     @NotNull

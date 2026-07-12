@@ -1,6 +1,7 @@
 package com.pradeep.slms.exception;
 
 import com.pradeep.slms.dto.ApiResponse;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.OptimisticLockingFailureException;
@@ -18,8 +19,8 @@ import java.util.stream.Collectors;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(AppException.class)
-    public ResponseEntity<ApiResponse<Void>> handleAppException(AppException ex) {
-        log.warn("AppException: {}", ex.getMessage());
+    public ResponseEntity<ApiResponse<Void>> handleAppException(AppException ex, HttpServletRequest req) {
+        log.warn("AppException [{} {}]: {}", req.getMethod(), req.getRequestURI(), ex.getMessage());
         return ResponseEntity.status(ex.getStatus())
                 .body(ApiResponse.fail(ex.getMessage(), ex.getStatus().name()));
     }

@@ -1,7 +1,7 @@
 package com.pradeep.slms.controller;
 
 import com.pradeep.slms.dto.ClerkWebhookPayloadDTO;
-import com.pradeep.slms.service.UserService;
+import com.pradeep.slms.service.ClerkService;
 import com.svix.Webhook;
 import com.svix.exceptions.WebhookVerificationException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class WebhookController {
 
-    private final UserService userService;
+    private final ClerkService clerkService;
     private final ObjectMapper objectMapper;
 
     @Value("${clerk.webhook.secret}")
@@ -59,7 +59,7 @@ public class WebhookController {
 
             // If verification succeeds, parse and process the payload
             ClerkWebhookPayloadDTO clerkPayload = objectMapper.readValue(payload, ClerkWebhookPayloadDTO.class);
-            userService.processClerkWebhook(clerkPayload);
+            clerkService.processClerkWebhook(clerkPayload);
 
             return ResponseEntity.ok("Webhook processed successfully");
 
