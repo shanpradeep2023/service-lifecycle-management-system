@@ -14,4 +14,7 @@ public interface RequestAssignmentRepository extends JpaRepository<RequestAssign
 
     @EntityGraph(attributePaths = {"worker"})
     List<RequestAssignment> findAllByRequestIdAndIsCurrentTrue(Long requestId);
+
+    @EntityGraph(attributePaths = {"worker", "request", "request.shop", "request.createdBy", "request.updatedBy", "request.customerUser"})
+    List<RequestAssignment> findAllByWorkerIdAndIsCurrentTrue(Long workerId);
 }
