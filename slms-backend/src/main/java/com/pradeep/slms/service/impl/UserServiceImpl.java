@@ -1,7 +1,9 @@
 package com.pradeep.slms.service.impl;
 
 import com.pradeep.slms.dto.user.UserAssignmentRequestDTO;
+import com.pradeep.slms.dto.user.UserResponseDTO;
 import com.pradeep.slms.dto.user.UserUpdateProfileRequestDTO;
+import com.pradeep.slms.dto.user.UserUpdateRequestDTO;
 import com.pradeep.slms.entity.Shop;
 import com.pradeep.slms.entity.User;
 import com.pradeep.slms.exception.AppException;
@@ -9,13 +11,17 @@ import com.pradeep.slms.repository.ShopRepository;
 import com.pradeep.slms.repository.UserRepository;
 import com.pradeep.slms.security.SecurityContextService;
 import com.pradeep.slms.service.UserService;
+import jakarta.persistence.criteria.Predicate;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -95,5 +101,85 @@ public class UserServiceImpl implements UserService {
         if (request.getStatus() != null) {
             user.setStatus(request.getStatus());
         }
+    }
+
+    @Override
+    public List<UserResponseDTO> getAllUsers(Long shopId, User.UserRole role) {
+        var actor = securityContextService.currentUser();
+        
+        Specification<User> spec = (root, query, cb) -> {
+            Predicate predicate = cb.isNull(root.get("deletedAt"));
+            
+            if (actor.role() == User.UserRole.ADMIN) {
+                predicate = cb.and(predicate, cb.equal(root.join("shop").get("id"), actor.shopId()));
+            } else if (shopId != null) {
+                predicate = cb.and(predicate, cb.equal(root.join("shop").get("id"), shopId));
+            }
+
+            if (role != null) {
+                predicate = cb.and(predicate, cb.equal(root.get("role"), role));
+            }
+            return predicate;
+        };
+
+        return userRepository.findAll(spec).stream()
+                .map(this::mapToResponseDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public UserResponseDTO getUserById(Long id) {
+        User user = userRepository.findByIdAndDeletedAtIsNull(id)
+                .orElseThrow(() -> new AppException("User not found", HttpStatus.NOT_FOUND));
+
+        var actor = securityContextService.currentUser();
+        if (actor.role() == User.UserRole.ADMIN && (user.getShop() == null || !user.getShop().getId().equals(actor.shopId()))) {
+            throw new AppException("Access denied", HttpStatus.FORBIDDEN);
+        }
+
+        return mapToResponseDTO(user);
+    }
+
+    @Override
+    @Transactional
+    public UserResponseDTO updateUser(Long id, UserUpdateRequestDTO request) {
+        User user = userRepository.findByIdAndDeletedAtIsNull(id)
+                .orElseThrow(() -> new AppException("User not found", HttpStatus.NOT_FOUND));
+
+        var actor = securityContextService.currentUser();
+        if (actor.role() == User.UserRole.ADMIN && (user.getShop() == null || !user.getShop().getId().equals(actor.shopId()))) {
+            throw new AppException("Access denied", HttpStatus.FORBIDDEN);
+        }
+
+        if (request.getName() != null) user.setName(request.getName());
+        if (request.getPhone() != null) user.setPhone(request.getPhone());
+        if (request.getEmail() != null) user.setEmail(request.getEmail());
+        if (request.getRole() != null) user.setRole(request.getRole());
+        if (request.getStatus() != null) user.setStatus(request.getStatus());
+
+        if (request.getShopId() != null) {
+            if (actor.role() == User.UserRole.ADMIN && !actor.shopId().equals(request.getShopId())) {
+                throw new AppException("Cannot change user shop", HttpStatus.FORBIDDEN);
+            }
+            Shop shop = shopRepository.findByIdAndDeletedAtIsNull(request.getShopId())
+                    .orElseThrow(() -> new AppException("Shop not found", HttpStatus.NOT_FOUND));
+            user.setShop(shop);
+        }
+
+        return mapToResponseDTO(user);
+    }
+
+    private UserResponseDTO mapToResponseDTO(User user) {
+        return UserResponseDTO.builder()
+                .id(user.getId())
+                .clerkUserId(user.getClerkUserId())
+                .name(user.getName())
+                .phone(user.getPhone())
+                .email(user.getEmail())
+                .role(user.getRole())
+                .shopId(user.getShop() != null ? user.getShop().getId() : null)
+                .status(user.getStatus())
+                .createdAt(user.getCreatedAt())
+                .build();
     }
 }
