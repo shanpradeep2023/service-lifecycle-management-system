@@ -44,6 +44,11 @@ public class RequestStatusHistory {
     @Column(columnDefinition = "TEXT")
     private String notes;
 
-    @Column(name = "changed_at", insertable = false, updatable = false)
+    @Column(name = "changed_at", nullable = false, updatable = false)
     private OffsetDateTime changedAt;
+
+    @PrePersist
+    protected void onCreate() {
+        this.changedAt = OffsetDateTime.now();
+    }
 }

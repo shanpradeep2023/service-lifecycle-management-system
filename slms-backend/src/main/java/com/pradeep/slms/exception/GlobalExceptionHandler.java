@@ -1,6 +1,7 @@
 package com.pradeep.slms.exception;
 
 import com.pradeep.slms.dto.ApiResponse;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.OptimisticLockingFailureException;
@@ -10,6 +11,8 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authorization.AuthorizationDeniedException;
 
 import java.util.stream.Collectors;
 
@@ -18,8 +21,8 @@ import java.util.stream.Collectors;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(AppException.class)
-    public ResponseEntity<ApiResponse<Void>> handleAppException(AppException ex) {
-        log.warn("AppException: {}", ex.getMessage());
+    public ResponseEntity<ApiResponse<Void>> handleAppException(AppException ex, HttpServletRequest req) {
+        log.warn("AppException [{} {}]: {}", req.getMethod(), req.getRequestURI(), ex.getMessage());
         return ResponseEntity.status(ex.getStatus())
                 .body(ApiResponse.fail(ex.getMessage(), ex.getStatus().name()));
     }
@@ -53,6 +56,13 @@ public class GlobalExceptionHandler {
         log.warn("Malformed request body: {}", ex.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(ApiResponse.fail("Malformed request body", HttpStatus.BAD_REQUEST.name()));
+    }
+
+    @ExceptionHandler({AccessDeniedException.class, AuthorizationDeniedException.class})
+    public ResponseEntity<ApiResponse<Void>> handleAccessDenied(Exception ex) {
+        log.warn("Access Denied: {}", ex.getMessage());
+        return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                .body(ApiResponse.fail("Access denied: You do not have permission to perform this action.", HttpStatus.FORBIDDEN.name()));
     }
 
     @ExceptionHandler(Exception.class)

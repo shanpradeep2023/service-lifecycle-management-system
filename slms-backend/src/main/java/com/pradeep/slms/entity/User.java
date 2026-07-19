@@ -46,6 +46,6 @@ public class User extends Auditable {
     @Column(length = 20)
     private UserStatus status = UserStatus.ACTIVE;
 
-    public enum UserRole { COMMANDER, ADMIN, TECHNICIAN, CUSTOMER }
+    public enum UserRole { COMMANDER, ADMIN, TECHNICIAN, USER }
     public enum UserStatus { ACTIVE, INACTIVE }
 }

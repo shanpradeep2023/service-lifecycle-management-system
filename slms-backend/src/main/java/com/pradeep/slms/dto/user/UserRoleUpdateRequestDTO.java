@@ -1,4 +1,4 @@
-package com.pradeep.slms.dto;
+package com.pradeep.slms.dto.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,7 +9,7 @@ import jakarta.validation.constraints.NotBlank;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class RoleUpdateRequestDTO {
+public class UserRoleUpdateRequestDTO {
 
     @NotBlank
     @NotNull
