@@ -73,15 +73,30 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<TaskResponseDTO> getAllTasks() {
+    public List<TaskResponseDTO> getAllTasks(Long shopId) {
         AuthenticatedUser actor = securityContextService.currentUser();
-        List<ServiceRequest> tasks = actor.role() == User.UserRole.COMMANDER
-                ? serviceRequestRepository.findAllByDeletedAtIsNull()
-                : serviceRequestRepository.findAllByShopIdAndDeletedAtIsNull(securityContextService.currentShopId());
 
-        return tasks.stream()
-                .map(this::toResponse)
-                .toList();
+        return switch (actor.role()) {
+            case COMMANDER -> {
+                List<ServiceRequest> tasks = (shopId != null)
+                        ? serviceRequestRepository.findAllByShopIdAndDeletedAtIsNull(shopId)
+                        : serviceRequestRepository.findAllByDeletedAtIsNull();
+                yield tasks.stream().map(this::toResponse).toList();
+            }
+            case ADMIN -> {
+                Long actorShopId = securityContextService.currentShopId();
+                yield serviceRequestRepository.findAllByShopIdAndDeletedAtIsNull(actorShopId)
+                        .stream().map(this::toResponse).toList();
+            }
+            case TECHNICIAN -> {
+                List<RequestAssignment> assignments =
+                        requestAssignmentRepository.findAllByWorkerIdAndIsCurrentTrue(actor.id());
+                yield assignments.stream()
+                        .map(a -> TaskResponseDTO.from(a.getRequest(), a))
+                        .toList();
+            }
+            default -> throw AppException.forbidden("Your role does not permit viewing tasks");
+        };
     }
 
     @Override
