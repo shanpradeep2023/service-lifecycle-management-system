@@ -17,4 +17,13 @@ public interface RequestAssignmentRepository extends JpaRepository<RequestAssign
 
     @EntityGraph(attributePaths = {"worker", "request", "request.shop", "request.createdBy", "request.updatedBy", "request.customerUser"})
     List<RequestAssignment> findAllByWorkerIdAndIsCurrentTrue(Long workerId);
+
+    @EntityGraph(attributePaths = {"worker", "request", "request.shop", "request.createdBy", "request.updatedBy", "request.customerUser"})
+    List<RequestAssignment> findAllByWorkerId(Long workerId);
+
+    long countByWorkerIdAndIsCurrentTrue(Long workerId);
+
+    long countByWorkerIdAndRequest_Status(Long workerId, com.pradeep.slms.entity.ServiceRequest.RequestStatus status);
+
+    boolean existsByRequestIdAndWorkerIdAndIsCurrentTrue(Long requestId, Long workerId);
 }

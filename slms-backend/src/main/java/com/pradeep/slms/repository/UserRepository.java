@@ -17,4 +17,9 @@ public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificat
     Optional<User> findByIdAndDeletedAtIsNull(Long id);
 
     User.UserRole getRoleByClerkUserId(String clerkUserId);
+
+    long countByDeletedAtIsNull();
+    long countByRoleAndDeletedAtIsNull(User.UserRole role);
+    long countByShopIdAndDeletedAtIsNull(Long shopId);
+    long countByShopIdAndRoleAndDeletedAtIsNull(Long shopId, User.UserRole role);
 }
