@@ -1,4 +1,4 @@
-package com.pradeep.slms.dto;
+package com.pradeep.slms.dto.user;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;

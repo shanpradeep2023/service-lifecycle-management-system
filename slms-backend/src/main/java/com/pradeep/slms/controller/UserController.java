@@ -1,9 +1,9 @@
 package com.pradeep.slms.controller;
 
 import com.pradeep.slms.dto.ApiResponse;
-import com.pradeep.slms.dto.UserAssignmentRequestDTO;
-import com.pradeep.slms.dto.UserRoleUpdateRequestDTO;
-import com.pradeep.slms.dto.UserUpdateProfileRequestDTO;
+import com.pradeep.slms.dto.user.UserAssignmentRequestDTO;
+import com.pradeep.slms.dto.user.UserRoleUpdateRequestDTO;
+import com.pradeep.slms.dto.user.UserUpdateProfileRequestDTO;
 import com.pradeep.slms.security.SecurityContextService;
 import com.pradeep.slms.service.UserService;
 import jakarta.validation.Valid;

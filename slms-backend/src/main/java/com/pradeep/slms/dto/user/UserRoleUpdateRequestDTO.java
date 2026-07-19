@@ -1,4 +1,4 @@
-package com.pradeep.slms.dto;
+package com.pradeep.slms.dto.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

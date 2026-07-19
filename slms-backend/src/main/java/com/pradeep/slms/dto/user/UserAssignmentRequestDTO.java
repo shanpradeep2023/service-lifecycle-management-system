@@ -1,4 +1,4 @@
-package com.pradeep.slms.dto;
+package com.pradeep.slms.dto.user;
 
 
 import com.pradeep.slms.entity.User.UserStatus;

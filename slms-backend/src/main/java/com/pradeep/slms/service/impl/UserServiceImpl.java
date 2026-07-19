@@ -1,7 +1,7 @@
 package com.pradeep.slms.service.impl;
 
-import com.pradeep.slms.dto.UserAssignmentRequestDTO;
-import com.pradeep.slms.dto.UserUpdateProfileRequestDTO;
+import com.pradeep.slms.dto.user.UserAssignmentRequestDTO;
+import com.pradeep.slms.dto.user.UserUpdateProfileRequestDTO;
 import com.pradeep.slms.entity.Shop;
 import com.pradeep.slms.entity.User;
 import com.pradeep.slms.exception.AppException;
@@ -87,7 +87,7 @@ public class UserServiceImpl implements UserService {
                 throw new AppException("Cannot assign user to a different shop", HttpStatus.FORBIDDEN);
             }
 
-            Shop shop = shopRepository.findById(request.getShopId())
+            Shop shop = shopRepository.findByIdAndDeletedAtIsNull(request.getShopId())
                     .orElseThrow(() -> new AppException("Shop not found", HttpStatus.NOT_FOUND));
             user.setShop(shop);
         }

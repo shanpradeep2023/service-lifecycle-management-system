@@ -1,7 +1,7 @@
 package com.pradeep.slms.service;
 
-import com.pradeep.slms.dto.UserAssignmentRequestDTO;
-import com.pradeep.slms.dto.UserUpdateProfileRequestDTO;
+import com.pradeep.slms.dto.user.UserAssignmentRequestDTO;
+import com.pradeep.slms.dto.user.UserUpdateProfileRequestDTO;
 
 public interface UserService {
 
