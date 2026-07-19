@@ -14,4 +14,5 @@ public interface TaskService {
     TaskResponseDTO updateTask(Long id, TaskUpdateRequestDTO request);
     void deleteTask(Long id);
     TaskResponseDTO assignTaskToTechnician(Long id, TaskAssignmentRequestDTO request);
+    TaskResponseDTO updateTaskStatus(Long id, com.pradeep.slms.dto.task.TaskStatusUpdateRequestDTO request);
 }

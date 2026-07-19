@@ -20,4 +20,19 @@ public interface ServiceRequestRepository extends JpaRepository<ServiceRequest, 
 
     @EntityGraph(attributePaths = {"shop", "createdBy", "updatedBy", "customerUser"})
     List<ServiceRequest> findAllByShopIdAndDeletedAtIsNull(Long shopId);
+
+    long countByStatusAndDeletedAtIsNull(ServiceRequest.RequestStatus status);
+    long countByShopIdAndStatusAndDeletedAtIsNull(Long shopId, ServiceRequest.RequestStatus status);
+    
+    long countByPriorityAndDeletedAtIsNull(ServiceRequest.Priority priority);
+    long countByShopIdAndPriorityAndDeletedAtIsNull(Long shopId, ServiceRequest.Priority priority);
+
+    long countByDeletedAtIsNull();
+    long countByShopIdAndDeletedAtIsNull(Long shopId);
+
+    @EntityGraph(attributePaths = {"shop", "createdBy", "updatedBy", "customerUser"})
+    List<ServiceRequest> findAllByCreatedByIdAndDeletedAtIsNull(Long userId);
+
+    long countByCreatedByIdAndDeletedAtIsNull(Long userId);
+    long countByCreatedByIdAndStatusAndDeletedAtIsNull(Long userId, ServiceRequest.RequestStatus status);
 }

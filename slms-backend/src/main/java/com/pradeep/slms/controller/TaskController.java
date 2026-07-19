@@ -86,4 +86,15 @@ public class TaskController {
         TaskResponseDTO response = taskService.assignTaskToTechnician(id, request);
         return ResponseEntity.ok(ApiResponse.ok("Task assigned successfully", response));
     }
+
+    @PatchMapping("/{id}/status")
+    @PreAuthorize("hasAnyRole('COMMANDER', 'ADMIN', 'TECHNICIAN')")
+    public ResponseEntity<ApiResponse<TaskResponseDTO>> updateTaskStatus(
+            @PathVariable Long id,
+            @RequestBody @Valid com.pradeep.slms.dto.task.TaskStatusUpdateRequestDTO request
+    ) {
+        log.info("Updating task status for {} to {}", id, request.getStatus());
+        TaskResponseDTO response = taskService.updateTaskStatus(id, request);
+        return ResponseEntity.ok(ApiResponse.ok("Task status updated successfully", response));
+    }
 }

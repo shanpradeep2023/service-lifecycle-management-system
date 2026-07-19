@@ -183,6 +183,36 @@ public class TaskServiceImpl implements TaskService {
         return TaskResponseDTO.from(task, savedAssignment);
     }
 
+    @Override
+    @Transactional
+    public TaskResponseDTO updateTaskStatus(Long id, com.pradeep.slms.dto.task.TaskStatusUpdateRequestDTO request) {
+        ServiceRequest task = getVisibleTask(id);
+        AuthenticatedUser actor = securityContextService.currentUser();
+        User user = getCurrentUser(actor);
+
+        if (actor.role() == User.UserRole.TECHNICIAN) {
+            boolean isAssigned = requestAssignmentRepository.existsByRequestIdAndWorkerIdAndIsCurrentTrue(task.getId(), user.getId());
+            if (!isAssigned) {
+                throw AppException.forbidden("You can only update tasks assigned to you");
+            }
+
+            if (request.getStatus() != ServiceRequest.RequestStatus.IN_PROGRESS &&
+                request.getStatus() != ServiceRequest.RequestStatus.COMPLETED &&
+                request.getStatus() != ServiceRequest.RequestStatus.CANCELLED) {
+                throw AppException.badRequest("Technicians can only set status to IN_PROGRESS, COMPLETED, or CANCELLED");
+            }
+        }
+
+        ServiceRequest.RequestStatus oldStatus = task.getStatus();
+        if (oldStatus != request.getStatus()) {
+            task.setStatus(request.getStatus());
+            saveStatusHistory(task, oldStatus, request.getStatus(), user, request.getNotes());
+            task.setUpdatedBy(user);
+        }
+
+        return toResponse(task);
+    }
+
     private ServiceRequest getVisibleTask(Long id) {
         AuthenticatedUser actor = securityContextService.currentUser();
         if (actor.role() == User.UserRole.COMMANDER) {
