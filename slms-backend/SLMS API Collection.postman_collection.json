@@ -1,0 +1,710 @@
+{
+  "info": {
+    "_postman_id": "890ebe34-cdc8-4000-b516-54702387948d",
+    "name": "SLMS API Collection",
+    "description": "Postman Collection for Task and User APIs in SLMS",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "40037261"
+  },
+  "item": [
+    {
+      "name": "Tasks",
+      "item": [
+        {
+          "name": "Create Task",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"shopId\": 2,\n  \"customerName\": \"John Doe\",\n  \"customerPhone\": \"+1234567890\",\n  \"address\": \"123 Main St\",\n  \"latitude\": 12.34,\n  \"longitude\": 56.78,\n  \"issueType\": \"SERVICE\",\n  \"description\": \"Needs maintenance\",\n  \"priority\": \"HIGH\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/tasks",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "tasks"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Task by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/tasks/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "tasks",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get All Tasks",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/tasks?shopId=1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "tasks"
+              ],
+              "query": [
+                {
+                  "key": "shopId",
+                  "value": "1"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Task",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customerName\": \"John Doe Updated\",\n  \"customerPhone\": \"+1987654321\",\n  \"address\": \"456 Side St\",\n  \"latitude\": 12.35,\n  \"longitude\": 56.79,\n  \"issueType\": \"SALES\",\n  \"description\": \"Updated description\",\n  \"priority\": \"URGENT\",\n  \"status\": \"IN_PROGRESS\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/tasks/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "tasks",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Assign Technician to Task",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"technicianId\": 2\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/tasks/{{task-id}}/assign-technician",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "tasks",
+                "{{task-id}}",
+                "assign-technician"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Task",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/tasks/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "tasks",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Task Status",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"COMPLETED\",\n  \"notes\": \"Finished the repair.\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/tasks/{{task-id}}/status",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "tasks",
+                "{{task-id}}",
+                "status"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Shop",
+      "item": [
+        {
+          "name": "create shop",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJSUzI1NiIsImNhdCI6ImNsX0I3ZDRQRDExMUFBQSIsImtpZCI6Imluc18zRmlGQVE0UHBwemdVRUxRaW5PVlJJTUkwU04iLCJvaWF0IjoxNzg0Mjk5NDA0LCJ0eXAiOiJKV1QifQ.eyJhenAiOiJodHRwOi8vbG9jYWxob3N0OjUxNzMiLCJleHAiOjE3ODQyOTk0NjQsImZ2YSI6WzEsMV0sImlhdCI6MTc4NDI5OTQwNCwiaXNzIjoiaHR0cHM6Ly9saXRlcmF0ZS1rYXR5ZGlkLTc0LmNsZXJrLmFjY291bnRzLmRldiIsIm5iZiI6MTc4NDI5OTM5NCwic2lkIjoic2Vzc18zR2RSOWtWekFkeGt5TVo4UHV2WHNhem0wc0kiLCJzdHMiOiJhY3RpdmUiLCJzdWIiOiJ1c2VyXzNHUDFWNFRiYVY5NDBaNUZzeUJOT1puR240byIsInYiOjJ9.Kj3q2QVagGjzumEsQ3vHOULwBD0TwzH-iNv83bD12o_QhXf06FyMHzfjOwlOR_TuhZZHR_iRI_1ARVi8jUBNk7H8UVX8YrQnrm5A9GqiYRftwntHLPceHHeeN78Jw93eONsJ8csLbKgHDLfQdDZY_sm3azfF80AJ39eNT5WXxGZmoeKqYQOs6zqAdVxymmoGgqbaIbLKiEkeFIGJoK_lFSzaikP7L75gAoj0I3bIif7BDDV6GSVjSpebWf7vm3QRmrDXkiPZghO_1iEcbdiqe3W2EuMru7RMAfOdXnebyQvVc-Zmyl_W7ZhrcXMYnnGxyWgyHXqpuQyY0d8PoXBg1Q",
+                "type": "text",
+                "disabled": true
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\": \"SHOP 1\",\r\n    \"address\": \"Bellare\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "localhost:8080/api/shops/create-shop",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "shops",
+                "create-shop"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update shop by id",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJSUzI1NiIsImNhdCI6ImNsX0I3ZDRQRDExMUFBQSIsImtpZCI6Imluc18zRmlGQVE0UHBwemdVRUxRaW5PVlJJTUkwU04iLCJvaWF0IjoxNzg0MzAyNDAwLCJ0eXAiOiJKV1QifQ.eyJhenAiOiJodHRwOi8vbG9jYWxob3N0OjUxNzMiLCJleHAiOjE3ODQzMDI0NjAsImZ2YSI6WzUxLDUxXSwiaWF0IjoxNzg0MzAyNDAwLCJpc3MiOiJodHRwczovL2xpdGVyYXRlLWthdHlkaWQtNzQuY2xlcmsuYWNjb3VudHMuZGV2IiwibmJmIjoxNzg0MzAyMzkwLCJzaWQiOiJzZXNzXzNHZFI5a1Z6QWR4a3lNWjhQdXZYc2F6bTBzSSIsInN0cyI6ImFjdGl2ZSIsInN1YiI6InVzZXJfM0dQMVY0VGJhVjk0MFo1RnN5Qk5PWm5HbjRvIiwidiI6Mn0.hKe_ruvHwVJZbXPE3b983iTHfSLKfzrcyxk8jbAm0gnQBsvyGQ5mGeD80Y-AA1NicMuLAG2eC_LJvP0jqYrRVXfBtgWt_IQoUaVw84PEKxW31RcwArKve5UkhoD4BPCUuLox54rJM6fr3wXCyqtlRjn_O4A6z-4A_6dRZ4gS3EOSlJrI96LGNceJZWpXqSDQbFpTxyBj1iEe-Vj-QUEOwEMDhOORyl447bSQcVGC6BakwEE5PAWHGbBknbNcBLNFBUXTqdjitOlEIe2fY8_YhIj1hwmUq5I9q6aIPBGGsJUjX7JubFikvjQp9arICwQ3CeEtKss_MMmNiUkj6XHmkg",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJSUzI1NiIsImNhdCI6ImNsX0I3ZDRQRDExMUFBQSIsImtpZCI6Imluc18zRmlGQVE0UHBwemdVRUxRaW5PVlJJTUkwU04iLCJvaWF0IjoxNzg0Mjk5NDA0LCJ0eXAiOiJKV1QifQ.eyJhenAiOiJodHRwOi8vbG9jYWxob3N0OjUxNzMiLCJleHAiOjE3ODQyOTk0NjQsImZ2YSI6WzEsMV0sImlhdCI6MTc4NDI5OTQwNCwiaXNzIjoiaHR0cHM6Ly9saXRlcmF0ZS1rYXR5ZGlkLTc0LmNsZXJrLmFjY291bnRzLmRldiIsIm5iZiI6MTc4NDI5OTM5NCwic2lkIjoic2Vzc18zR2RSOWtWekFkeGt5TVo4UHV2WHNhem0wc0kiLCJzdHMiOiJhY3RpdmUiLCJzdWIiOiJ1c2VyXzNHUDFWNFRiYVY5NDBaNUZzeUJOT1puR240byIsInYiOjJ9.Kj3q2QVagGjzumEsQ3vHOULwBD0TwzH-iNv83bD12o_QhXf06FyMHzfjOwlOR_TuhZZHR_iRI_1ARVi8jUBNk7H8UVX8YrQnrm5A9GqiYRftwntHLPceHHeeN78Jw93eONsJ8csLbKgHDLfQdDZY_sm3azfF80AJ39eNT5WXxGZmoeKqYQOs6zqAdVxymmoGgqbaIbLKiEkeFIGJoK_lFSzaikP7L75gAoj0I3bIif7BDDV6GSVjSpebWf7vm3QRmrDXkiPZghO_1iEcbdiqe3W2EuMru7RMAfOdXnebyQvVc-Zmyl_W7ZhrcXMYnnGxyWgyHXqpuQyY0d8PoXBg1Q",
+                "type": "text",
+                "disabled": true
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\": \"SHOP 1 Updated\",\r\n    \"address\": \"Bellare Updated\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "localhost:8080/api/shops/update-shop/1",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "shops",
+                "update-shop",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get shop by id",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJSUzI1NiIsImNhdCI6ImNsX0I3ZDRQRDExMUFBQSIsImtpZCI6Imluc18zRmlGQVE0UHBwemdVRUxRaW5PVlJJTUkwU04iLCJvaWF0IjoxNzg0MzAyMjA1LCJ0eXAiOiJKV1QifQ.eyJhenAiOiJodHRwOi8vbG9jYWxob3N0OjUxNzMiLCJleHAiOjE3ODQzMDIyNjUsImZ2YSI6WzQ4LDQ4XSwiaWF0IjoxNzg0MzAyMjA1LCJpc3MiOiJodHRwczovL2xpdGVyYXRlLWthdHlkaWQtNzQuY2xlcmsuYWNjb3VudHMuZGV2IiwibmJmIjoxNzg0MzAyMTk1LCJzaWQiOiJzZXNzXzNHZFI5a1Z6QWR4a3lNWjhQdXZYc2F6bTBzSSIsInN0cyI6ImFjdGl2ZSIsInN1YiI6InVzZXJfM0dQMVY0VGJhVjk0MFo1RnN5Qk5PWm5HbjRvIiwidiI6Mn0.YFOOAWY1aPZmIjyM0RpceAJ2_IwUfhIgR0mz2VldhR5vTee8Raz1O8sDXPnc8WCExTEwLQRbVyrIKLiODXZrUbPFk_Ez4lfFHc0kHU8OGskPk7s94w85T3fLcC7W51jlT1lXsOPlVvQE53JHyvsbAD-LBY0MeR3sK85Vf9KhxHBaV6jNtQP1JjNIrJ3_Xuw5Re_F-WjfLivx8mpiwE00Ljh1N9JvD5_2eb4b55HwzRhpbBsVhuWrJWW1mbcQy5co1g5eP3ZwZpJLClVWi1Row_ifD8zvMYrplOfg_O4a8efeT9xfivzDkRcMiHB2-gK6s7BBudEp7NPGprddj1p4Ng",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJSUzI1NiIsImNhdCI6ImNsX0I3ZDRQRDExMUFBQSIsImtpZCI6Imluc18zRmlGQVE0UHBwemdVRUxRaW5PVlJJTUkwU04iLCJvaWF0IjoxNzg0Mjk5NDA0LCJ0eXAiOiJKV1QifQ.eyJhenAiOiJodHRwOi8vbG9jYWxob3N0OjUxNzMiLCJleHAiOjE3ODQyOTk0NjQsImZ2YSI6WzEsMV0sImlhdCI6MTc4NDI5OTQwNCwiaXNzIjoiaHR0cHM6Ly9saXRlcmF0ZS1rYXR5ZGlkLTc0LmNsZXJrLmFjY291bnRzLmRldiIsIm5iZiI6MTc4NDI5OTM5NCwic2lkIjoic2Vzc18zR2RSOWtWekFkeGt5TVo4UHV2WHNhem0wc0kiLCJzdHMiOiJhY3RpdmUiLCJzdWIiOiJ1c2VyXzNHUDFWNFRiYVY5NDBaNUZzeUJOT1puR240byIsInYiOjJ9.Kj3q2QVagGjzumEsQ3vHOULwBD0TwzH-iNv83bD12o_QhXf06FyMHzfjOwlOR_TuhZZHR_iRI_1ARVi8jUBNk7H8UVX8YrQnrm5A9GqiYRftwntHLPceHHeeN78Jw93eONsJ8csLbKgHDLfQdDZY_sm3azfF80AJ39eNT5WXxGZmoeKqYQOs6zqAdVxymmoGgqbaIbLKiEkeFIGJoK_lFSzaikP7L75gAoj0I3bIif7BDDV6GSVjSpebWf7vm3QRmrDXkiPZghO_1iEcbdiqe3W2EuMru7RMAfOdXnebyQvVc-Zmyl_W7ZhrcXMYnnGxyWgyHXqpuQyY0d8PoXBg1Q",
+                "type": "text",
+                "disabled": true
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\": \"SHOP 1\",\r\n    \"address\": \"Bellare\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "localhost:8080/api/shops/1",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "shops",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get all shops",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJSUzI1NiIsImNhdCI6ImNsX0I3ZDRQRDExMUFBQSIsImtpZCI6Imluc18zRmlGQVE0UHBwemdVRUxRaW5PVlJJTUkwU04iLCJvaWF0IjoxNzg0Mjk5NDA0LCJ0eXAiOiJKV1QifQ.eyJhenAiOiJodHRwOi8vbG9jYWxob3N0OjUxNzMiLCJleHAiOjE3ODQyOTk0NjQsImZ2YSI6WzEsMV0sImlhdCI6MTc4NDI5OTQwNCwiaXNzIjoiaHR0cHM6Ly9saXRlcmF0ZS1rYXR5ZGlkLTc0LmNsZXJrLmFjY291bnRzLmRldiIsIm5iZiI6MTc4NDI5OTM5NCwic2lkIjoic2Vzc18zR2RSOWtWekFkeGt5TVo4UHV2WHNhem0wc0kiLCJzdHMiOiJhY3RpdmUiLCJzdWIiOiJ1c2VyXzNHUDFWNFRiYVY5NDBaNUZzeUJOT1puR240byIsInYiOjJ9.Kj3q2QVagGjzumEsQ3vHOULwBD0TwzH-iNv83bD12o_QhXf06FyMHzfjOwlOR_TuhZZHR_iRI_1ARVi8jUBNk7H8UVX8YrQnrm5A9GqiYRftwntHLPceHHeeN78Jw93eONsJ8csLbKgHDLfQdDZY_sm3azfF80AJ39eNT5WXxGZmoeKqYQOs6zqAdVxymmoGgqbaIbLKiEkeFIGJoK_lFSzaikP7L75gAoj0I3bIif7BDDV6GSVjSpebWf7vm3QRmrDXkiPZghO_1iEcbdiqe3W2EuMru7RMAfOdXnebyQvVc-Zmyl_W7ZhrcXMYnnGxyWgyHXqpuQyY0d8PoXBg1Q",
+                "type": "text",
+                "disabled": true
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\": \"SHOP 1\",\r\n    \"address\": \"Bellare\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "localhost:8080/api/shops",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "shops"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "delete shop by id",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJSUzI1NiIsImNhdCI6ImNsX0I3ZDRQRDExMUFBQSIsImtpZCI6Imluc18zRmlGQVE0UHBwemdVRUxRaW5PVlJJTUkwU04iLCJvaWF0IjoxNzg0MzAyNTQxLCJ0eXAiOiJKV1QifQ.eyJhenAiOiJodHRwOi8vbG9jYWxob3N0OjUxNzMiLCJleHAiOjE3ODQzMDI2MDEsImZ2YSI6WzUzLDUzXSwiaWF0IjoxNzg0MzAyNTQxLCJpc3MiOiJodHRwczovL2xpdGVyYXRlLWthdHlkaWQtNzQuY2xlcmsuYWNjb3VudHMuZGV2IiwibmJmIjoxNzg0MzAyNTMxLCJzaWQiOiJzZXNzXzNHZFI5a1Z6QWR4a3lNWjhQdXZYc2F6bTBzSSIsInN0cyI6ImFjdGl2ZSIsInN1YiI6InVzZXJfM0dQMVY0VGJhVjk0MFo1RnN5Qk5PWm5HbjRvIiwidiI6Mn0.tM3e866dcGODA6jWb4SAyMffGU1x80Udc9G4NpOb2cE621eakx-3R3yyOG7AiSNtb0SYSbi22OYUMLS3CvWgXwkTVi51gN5hQvK2_xPKI7KCfT3_uGjFeMIeMPRDUwtCsjnud-saEMzbXAgpla_PqgcV73wd3TTy29Q0ml4Ybd2bX8TAocr4hDih25NfijByClQw6hHxtDEjECVsS063-Uo-he5ujy6aqj92jWYKZp_w-O_uCrOnhswUTPg1N7b41EBve3NL8vwJqtdf9uLUH3cqCp29axKExE432z4JXkOOog3ZuQHgJMFbMbU4dW_lHuYAHAL9b0K-EgOfn2M0AQ",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJSUzI1NiIsImNhdCI6ImNsX0I3ZDRQRDExMUFBQSIsImtpZCI6Imluc18zRmlGQVE0UHBwemdVRUxRaW5PVlJJTUkwU04iLCJvaWF0IjoxNzg0Mjk5NDA0LCJ0eXAiOiJKV1QifQ.eyJhenAiOiJodHRwOi8vbG9jYWxob3N0OjUxNzMiLCJleHAiOjE3ODQyOTk0NjQsImZ2YSI6WzEsMV0sImlhdCI6MTc4NDI5OTQwNCwiaXNzIjoiaHR0cHM6Ly9saXRlcmF0ZS1rYXR5ZGlkLTc0LmNsZXJrLmFjY291bnRzLmRldiIsIm5iZiI6MTc4NDI5OTM5NCwic2lkIjoic2Vzc18zR2RSOWtWekFkeGt5TVo4UHV2WHNhem0wc0kiLCJzdHMiOiJhY3RpdmUiLCJzdWIiOiJ1c2VyXzNHUDFWNFRiYVY5NDBaNUZzeUJOT1puR240byIsInYiOjJ9.Kj3q2QVagGjzumEsQ3vHOULwBD0TwzH-iNv83bD12o_QhXf06FyMHzfjOwlOR_TuhZZHR_iRI_1ARVi8jUBNk7H8UVX8YrQnrm5A9GqiYRftwntHLPceHHeeN78Jw93eONsJ8csLbKgHDLfQdDZY_sm3azfF80AJ39eNT5WXxGZmoeKqYQOs6zqAdVxymmoGgqbaIbLKiEkeFIGJoK_lFSzaikP7L75gAoj0I3bIif7BDDV6GSVjSpebWf7vm3QRmrDXkiPZghO_1iEcbdiqe3W2EuMru7RMAfOdXnebyQvVc-Zmyl_W7ZhrcXMYnnGxyWgyHXqpuQyY0d8PoXBg1Q",
+                "type": "text",
+                "disabled": true
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\": \"SHOP 1\",\r\n    \"address\": \"Bellare\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "localhost:8080/api/shops/delete-shop/1",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "shops",
+                "delete-shop",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Users",
+      "item": [
+        {
+          "name": "Get All Users",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/user?shopId=1&role=TECHNICIAN",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "user"
+              ],
+              "query": [
+                {
+                  "key": "shopId",
+                  "value": "1"
+                },
+                {
+                  "key": "role",
+                  "value": "TECHNICIAN"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get User by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/user/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "user",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update User",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Jane Updated\",\n  \"phone\": \"+1987654321\",\n  \"email\": \"jane.updated@example.com\",\n  \"role\": \"TECHNICIAN\",\n  \"shopId\": 1,\n  \"status\": \"ACTIVE\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/user/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "user",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Current User Role",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/user/role",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "user",
+                "role"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update User Role",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"clerkId\": \"user_2XYZ\",\n  \"role\": \"TECHNICIAN\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/user/update-user-role",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "user",
+                "update-user-role"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Own Profile",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Jane Doe\",\n  \"phone\": \"+1987654321\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/user/profile",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "user",
+                "profile"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Assign Shop and Status",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"clerkUserId\": \"user_2XYZ\",\n  \"shopId\": 1,\n  \"status\": \"ACTIVE\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/user/assign-shop",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "user",
+                "assign-shop"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Dashboards",
+      "item": [
+        {
+          "name": "Commander Dashboard",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/commander/dashboard",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "commander",
+                "dashboard"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Commander User Task Summary",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/commander/dashboard/users/1/tasks",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "commander",
+                "dashboard",
+                "users",
+                "1",
+                "tasks"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Admin Dashboard",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/admin/dashboard",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "admin",
+                "dashboard"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Admin User Task Summary",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/admin/dashboard/users/1/tasks",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "admin",
+                "dashboard",
+                "users",
+                "1",
+                "tasks"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080",
+      "type": "string"
+    },
+    {
+      "key": "bearerToken",
+      "value": "your_clerk_jwt_token_here",
+      "type": "string"
+    },
+    {
+      "key": "task-id",
+      "value": "",
+      "type": "default"
+    }
+  ]
+}
