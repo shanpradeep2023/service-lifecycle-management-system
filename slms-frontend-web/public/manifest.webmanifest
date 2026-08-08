@@ -1,0 +1,13 @@
+{
+  "name": "Loopwork Service Management",
+  "short_name": "Loopwork",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f6f6fb",
+  "theme_color": "#6750e8",
+  "description": "Service lifecycle management for shop operations.",
+  "icons": [
+    { "src": "/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "maskable" }
+  ]
+}
